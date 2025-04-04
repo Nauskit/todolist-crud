@@ -19,7 +19,14 @@ export default function Input({ fetchTodos }) {
     }
     return (
         <div className="input_form">
-            <input type="text" placeholder="Enter Task" onChange={(e) => setTask(e.target.value)} />
+            <input type="text" placeholder="Add Task"
+                onChange={(e) => setTask(e.target.value)}
+                onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        handleSubmit();
+                    }
+                }}
+            />
             <button type="button" onClick={handleSubmit}>Add</button>
         </div>
     )

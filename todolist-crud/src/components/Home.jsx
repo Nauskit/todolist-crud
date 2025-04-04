@@ -16,9 +16,26 @@ export default function Home() {
     useEffect(() => {
         fetchTodos();
     }, [])
+
+    const handleEdit = (id) => {
+        axios.put('http://localhost:3001/update/' + id)
+            .then(result =>
+                location.reload(result)
+            )
+            .catch(err => console.log(err))
+    }
+
+    const handleDelete = (id) => {
+        axios.delete('http://localhost:3001/delete/' + id)
+            .then(result =>
+                location.reload(result)
+            )
+            .catch(err => console.log(err))
+    }
+
     return (
         <div className="home">
-            <h2>Todo-list</h2>
+            <h1>TODOLIST-CRUD</h1>
             <Input fetchTodos={fetchTodos} />
             {
                 todos.length === 0 ?
@@ -26,7 +43,11 @@ export default function Home() {
                     :
                     todos.map((todo, index) => (
                         <div className="task" key={index}>
-                            <p>{todo.task}</p>
+                            <div className="task-item">
+                                <div onClick={() => handleEdit(todo._id)} className="check-box">O</div>
+                                <div className="task-list"><p className={todo.done ? "line_through" : ""}>{todo.task}</p></div>
+                                <div onClick={() => handleDelete(todo._id)} className="task-delete">X</div>
+                            </div>
                         </div>
                     ))
             }

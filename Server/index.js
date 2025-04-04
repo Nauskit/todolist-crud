@@ -10,6 +10,28 @@ app.use(express.json());
 mongoose.connect('mongodb://localhost:27017/test')
 
 
+
+app.put('/update/:id', (req, res) => {
+    const { id } = req.params;
+    // TodoModel.findByIdAndUpdate({ _id: id }, { done: true })
+    TodoModel.findById(id)
+        .then(todo => {
+            todo.done = !todo.done;
+            return todo.save();
+        })
+        .then(result => res.json(result))
+        .catch(err => console.log(err))
+})
+
+app.delete('/delete/:id', (req, res) => {
+    const { id } = req.params;
+    TodoModel.findByIdAndDelete({ _id: id })
+        .then(result => res.json(result))
+        .catch(err => console.log(err));
+})
+
+
+
 app.get('/get', (req, res) => {
     TodoModel.find()
         .then(result => res.json(result))
